@@ -2,10 +2,7 @@ package dev.idinaldo.brabank.auth_service.model.user;
 
 import dev.idinaldo.brabank.auth_service.model.role.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -39,20 +36,29 @@ public class User {
     @ToString.Exclude
     @Column(nullable = false)
     @NotBlank(message = "Nome completo é obrigatório")
+    @Pattern(regexp = "^[A-ZÀ-Úa-zà-ú]{2,}(?:[ '-][A-ZÀ-Úa-zà-ú]{2,})+$", message = "Nome inválido")
     private String fullName;
 
+    @Size(min = 8)
     @ToString.Exclude
     @Column(nullable = false)
     @NotBlank(message = "Senha é obrigatório")
+    @Pattern(
+            regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@.!#$%¨&*()_\\-+=`´~^\\\\[\\]{}:;?><\\/|])[A-Za-z\\d@.!#$%¨&*()_\\-+=`´~^\\\\[\\]{}:;?><\\/|]{8,}$",
+            message = "Senha inválida"
+    )
     private String password;
 
+    @Size(min = 2, max = 15)
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Nome de usuário é obrigatório")
+    @Pattern(regexp = "^[0-9A-Za-z_\\.:\\/]{2,}$", message = "Nome de usuário inválido")
     private String username;
 
     @ToString.Exclude
     @Column(nullable = false, unique = true)
     @NotBlank(message = "CPF é obrigatório")
+    @Pattern(regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$", message = "CPF inválido")
     private String cpf;
 
     @ToString.Exclude
