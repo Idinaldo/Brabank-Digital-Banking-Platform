@@ -1,5 +1,9 @@
 # Brabank - De brasileiro pra brasileiro
 
+![Build](https://img.shields.io/badge/build-pending-yellow)
+![Docker](https://img.shields.io/badge/docker-pending-blue)
+![Coverage](https://img.shields.io/badge/coverage-0%25-red)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
 
 Bem-vindo ao Brabank, a nova fintech brasileira criada com o propósito de facilitar o acesso à investimentos, notícias e educação financeira.
