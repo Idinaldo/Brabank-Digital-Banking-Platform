@@ -1,6 +1,5 @@
 package dev.idinaldo.brabank.auth_service.model.user;
 
-
 import dev.idinaldo.brabank.auth_service.model.role.Role;
 import jakarta.validation.constraints.*;
 import java.util.Set;
