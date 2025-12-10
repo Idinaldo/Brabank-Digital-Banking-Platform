@@ -8,14 +8,7 @@ public record UserRequestDTO(
         @NotBlank(message = "E-mail é obrigatório")
         @Email(message = "E-mail inválido")
         String email,
-
-        @NotBlank
-        @Pattern(
-            regexp = "^[A-ZÀ-Úa-zà-ú]{2,}(?:[ '-][A-ZÀ-Úa-zà-ú]{2,})+$",
-            message = "Nome inválido"
-        )
-        String fullName,
-
+        
         @NotBlank(message = "Senha é obrigatório")
         @Size(min = 8)
         @Pattern(
@@ -31,13 +24,6 @@ public record UserRequestDTO(
             message = "Nome de usuário inválido"
         )
         String username,
-
-        @NotBlank(message = "CPF é obrigatório")
-        @Pattern(
-            regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$",
-            message = "CPF inválido"
-        )
-        String cpf,
 
         @NotEmpty Set<Role> roles
 ) {
