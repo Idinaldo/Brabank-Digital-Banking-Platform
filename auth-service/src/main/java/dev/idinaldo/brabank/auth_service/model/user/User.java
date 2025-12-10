@@ -37,7 +37,7 @@ public class User {
     @Column(nullable = false)
     @NotBlank(message = "Senha é obrigatório")
     @Pattern(
-            regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@.!#$%¨&*()_\\-+=`´~^\\\\[\\]{}:;?><\\/|])[A-Za-z\\d@.!#$%¨&*()_\\-+=`´~^\\\\[\\]{}:;?><\\/|]{8,}$",
+            regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$\n",
             message = "Senha inválida"
     )
     private String passwordHash;
