@@ -1,6 +1,7 @@
 package dev.idinaldo.brabank.auth_service.model.user;
 
 import dev.idinaldo.brabank.auth_service.model.role.Role;
+import dev.idinaldo.brabank.auth_service.model.role.RoleName;
 import jakarta.validation.constraints.*;
 import java.util.Set;
 
@@ -12,19 +13,11 @@ public record UserRequestDTO(
         @NotBlank(message = "Senha é obrigatório")
         @Size(min = 8)
         @Pattern(
-            regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$\n",
+            regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$",
             message = "Senha inválida"
         )
         String password,
 
-        @NotBlank(message = "Nome de usuário é obrigatório")
-        @Size(min = 2, max = 15)
-        @Pattern(
-            regexp = "^[0-9A-Za-z_\\.:\\/]{2,}$",
-            message = "Nome de usuário inválido"
-        )
-        String username,
-
-        @NotEmpty Set<Role> roles
+        @NotEmpty Set<RoleName> roles
 ) {
 }
