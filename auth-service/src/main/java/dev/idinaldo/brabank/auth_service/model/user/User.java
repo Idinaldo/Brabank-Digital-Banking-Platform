@@ -32,14 +32,9 @@ public class User {
     @NotBlank(message = "E-mail é obrigatório")
     private String email;
 
-    @Size(min = 8)
     @ToString.Exclude
     @Column(nullable = false)
     @NotBlank(message = "Senha é obrigatório")
-    @Pattern(
-            regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$\n",
-            message = "Senha inválida"
-    )
     private String passwordHash;
 
     @ToString.Exclude
