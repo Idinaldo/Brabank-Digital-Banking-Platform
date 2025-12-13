@@ -1,16 +1,20 @@
-version: "1.0"
-
 services:
-  app:
+  auth-service:
     build: .
     ports:
       - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/brabank_auth
-      SPRING_DATASOURCE_USER: admin
-      SPRING_DATASOURCE_PASSWORD: supaCoolPassword
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
     depends_on:
       - db
+    entrypoint: ["./wait-for-it.sh", "db:5432", "--", "java", "-jar", "app.jar"]
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin" ]
+      interval: 5s
+      retries: 5
+      timeout: 5s
 
   db:
     image: postgres:15
@@ -18,7 +22,7 @@ services:
     environment:
       POSTGRES_DB: brabank_auth
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: supaCoolPassword
+      POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
     volumes:
