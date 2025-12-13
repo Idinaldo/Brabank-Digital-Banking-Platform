@@ -8,13 +8,9 @@ services:
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin
     depends_on:
-      - db
-    entrypoint: ["./wait-for-it.sh", "db:5432", "--", "java", "-jar", "app.jar"]
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U admin" ]
-      interval: 5s
-      retries: 5
-      timeout: 5s
+      db:
+        condition: service_healthy
+    command : ["java", "-jar", "app.jar"]
 
   db:
     image: postgres:15
@@ -27,6 +23,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d brabank_auth"]
+      interval: 5s
+      retries: 5
+      timeout: 5s
 
 volumes:
   postgres_data:
