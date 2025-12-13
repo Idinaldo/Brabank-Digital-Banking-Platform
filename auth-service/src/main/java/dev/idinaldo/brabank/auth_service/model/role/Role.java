@@ -16,7 +16,7 @@ import java.util.UUID;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @Entity
-@Table(name = "app_role")
+@Table(name = "app_roles")
 public class Role {
 
     @Id
