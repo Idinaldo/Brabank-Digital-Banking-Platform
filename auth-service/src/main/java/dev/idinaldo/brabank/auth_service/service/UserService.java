@@ -37,6 +37,7 @@ public class UserService {
 
             User user = userMapper.userRequestDtoToUser(userRequestDTO);
             user.setRoles(roles);
+            System.out.println("USER: " + user);
             User saved_user = userRepository.save(user);
             return userMapper.userToUserResponseDto(saved_user);
         } catch (Exception e) {
