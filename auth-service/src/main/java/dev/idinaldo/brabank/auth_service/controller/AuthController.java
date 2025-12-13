@@ -1,6 +1,6 @@
 package dev.idinaldo.brabank.auth_service.controller;
 
-import dev.idinaldo.brabank.auth_service.model.user.UserRequestDTO;
+import dev.idinaldo.brabank.auth_service.dto.user.UserRequestDTO;
 import dev.idinaldo.brabank.auth_service.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
