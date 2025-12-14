@@ -5,6 +5,7 @@ import dev.idinaldo.brabank.auth_service.dto.role.RoleRequestDTO;
 import dev.idinaldo.brabank.auth_service.dto.role.RoleResponseDTO;
 import dev.idinaldo.brabank.auth_service.mapper.RoleMapper;
 import dev.idinaldo.brabank.auth_service.model.role.Role;
+import dev.idinaldo.brabank.auth_service.model.role.RoleName;
 import dev.idinaldo.brabank.auth_service.repository.RoleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,14 @@ public class RoleService {
     public RoleResponseDTO addRole(RoleRequestDTO roleRequestDTO) {
         try {
             Role role = roleMapper.roleRequestDtoToRole(roleRequestDTO.name());
-            Role saved_role = roleRepository.save(role);
-            return roleMapper.roleToRoleResponseDto(saved_role);
+            Role savedRole = roleRepository.save(role);
+            return roleMapper.roleToRoleResponseDto(savedRole);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
+    }
+
+    public Role findRoleByName(RoleName name) {
+        return roleRepository.findByName(RoleName.CLIENT).orElseThrow(() -> new IllegalStateException("Required role ROLE_CLIENT not found in database"));
     }
 }
