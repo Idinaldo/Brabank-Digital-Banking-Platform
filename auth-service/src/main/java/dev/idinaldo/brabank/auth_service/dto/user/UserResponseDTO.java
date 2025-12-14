@@ -1,4 +1,4 @@
-package dev.idinaldo.brabank.auth_service.model.user;
+package dev.idinaldo.brabank.auth_service.dto.user;
 
 import dev.idinaldo.brabank.auth_service.model.role.Role;
 import jakarta.validation.constraints.*;
@@ -13,22 +13,6 @@ public record UserResponseDTO(
         @NotBlank(message = "E-mail é obrigatório")
         @Email(message = "E-mail inválido")
         String email,
-
-        @Size(min = 8)
-        @NotBlank(message = "Senha é obrigatório")
-        @Pattern(
-            regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$\n",
-            message = "Senha inválida"
-        )
-        String password,
-
-        @Size(min = 2, max = 15)
-        @NotBlank(message = "Nome de usuário é obrigatório")
-        @Pattern(
-            regexp = "^[0-9A-Za-z_\\.:\\/]{2,}$",
-            message = "Nome de usuário inválido"
-        )
-        String username,
 
         @NotEmpty(message = "Role é obrigatório")
         Set<Role> roles,
