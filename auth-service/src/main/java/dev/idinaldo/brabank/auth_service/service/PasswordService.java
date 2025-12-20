@@ -9,6 +9,9 @@ public class PasswordService {
 
     private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
+    public boolean matches(String raw, String hash) {
+        return this.encoder.matches(raw, hash);
+    }
     public String hash(String rawPassword) {
         return this.encoder.encode(rawPassword);
     }
