@@ -27,6 +27,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(updatable = false, nullable = false)
+    private UUID userSubject;
+
     @Email(message = "E-mail inválido")
     @Column(nullable = false, unique = true)
     @NotBlank(message = "E-mail é obrigatório")
@@ -53,8 +56,17 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public User(String email, String passwordHash) {
+    public User(UUID id, String email, String passwordHash, Set<Role> roles, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
         this.email = email;
         this.passwordHash = passwordHash;
+        this.roles = roles;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void setUserSubject() {
+        this.userSubject = UUID.randomUUID();
     }
 }
