@@ -1,5 +1,6 @@
 package dev.idinaldo.brabank.auth_service.controller;
 
+import dev.idinaldo.brabank.auth_service.dto.login.LoginRequestDTO;
 import dev.idinaldo.brabank.auth_service.dto.user.UserRequestDTO;
 import dev.idinaldo.brabank.auth_service.service.UserService;
 import jakarta.validation.Valid;
@@ -20,7 +21,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> signup(@RequestBody @Valid UserRequestDTO userRequestDTO) {
-        return ResponseEntity.ok(userService.register(userRequestDTO));
+    public ResponseEntity<?> registerUser(@RequestBody @Valid UserRequestDTO userRequestDTO) {
+        return ResponseEntity.ok(userService.registerClient(userRequestDTO));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
+        return ResponseEntity.ok(userService.authenticate(loginRequestDTO));
     }
 }

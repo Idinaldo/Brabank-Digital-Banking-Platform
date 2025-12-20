@@ -1,6 +1,7 @@
 package dev.idinaldo.brabank.auth_service.dto.user;
 
 import dev.idinaldo.brabank.auth_service.model.role.Role;
+import dev.idinaldo.brabank.auth_service.model.role.RoleName;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ public record UserResponseDTO(
         String email,
 
         @NotEmpty(message = "Role é obrigatório")
-        Set<Role> roles,
+        Set<RoleName> roles,
 
         @NotNull(message = "createdAt é obrigatório")
         LocalDateTime createdAt,
