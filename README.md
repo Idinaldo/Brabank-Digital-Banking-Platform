@@ -58,7 +58,6 @@ Arquivo principal: `openapi.yml`
 
 ```
 brabank/
- ├── api-gateway/
  ├── auth-service/ # serviço de autenticação e gerenciamento de usuários
  ├── customer-service/ # gestão de clientes
  ├── transaction-service/ # processamento de transações financeiras
@@ -92,3 +91,8 @@ O Brabank nasceu para ser mais que uma fintech: Queremos ser uma ponte entre pes
 
     “O Investimento em conhecimento rende a melhor taxa”
     — Benjamin Franklin
+
+
+## Disclaimer
+
+Esse é um projeto educional, não uma fintech real. 
