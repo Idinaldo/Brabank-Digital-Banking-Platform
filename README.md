@@ -91,3 +91,8 @@ O Brabank nasceu para ser mais que uma fintech: Queremos ser uma ponte entre pes
 
     “O Investimento em conhecimento rende a melhor taxa”
     — Benjamin Franklin
+
+
+## Disclaimer
+
+Esse é um projeto educional, não uma fintech real. 
