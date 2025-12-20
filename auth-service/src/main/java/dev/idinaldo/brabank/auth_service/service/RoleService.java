@@ -1,6 +1,5 @@
 package dev.idinaldo.brabank.auth_service.service;
 
-
 import dev.idinaldo.brabank.auth_service.dto.role.RoleRequestDTO;
 import dev.idinaldo.brabank.auth_service.dto.role.RoleResponseDTO;
 import dev.idinaldo.brabank.auth_service.mapper.RoleMapper;
