@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.*;
 
@@ -45,7 +46,7 @@ public class UserServiceUnitTest {
         Role clientRole = new Role(UUID.randomUUID(), RoleName.CLIENT, LocalDateTime.now(), LocalDateTime.now());
         UserRequestDTO request = new UserRequestDTO("didi.moco@gmail.com", "pl@inPW!23");
         User user = new User(UUID.randomUUID(), "didi.moco@gmail.com", "hash", Set.of(clientRole), LocalDateTime.now(), LocalDateTime.now());
-        UserResponseDTO responseDTO = new UserResponseDTO(user.getId(), user.getEmail(), user.getRoles(), user.getCreatedAt(), user.getUpdatedAt());
+        UserResponseDTO responseDTO = new UserResponseDTO(user.getId(), user.getEmail(), user.getRoles().stream().map(Role::getName).collect(Collectors.toSet()), user.getCreatedAt(), user.getUpdatedAt());
 
         when(userMapper.userRequestDtoToUser(request)).thenReturn(user);
         when(roleService.findRoleByName(RoleName.CLIENT)).thenReturn(clientRole);
@@ -62,7 +63,7 @@ public class UserServiceUnitTest {
         verify(userMapper).userToUserResponseDto(user);
 
         assertEquals(response, responseDTO);
-        assertTrue(response.roles().stream().anyMatch(role -> role.getName().equals(RoleName.CLIENT)));
+        assertTrue(response.roles().stream().anyMatch(role -> role.name().equals(RoleName.CLIENT)));
     }
 
 }
