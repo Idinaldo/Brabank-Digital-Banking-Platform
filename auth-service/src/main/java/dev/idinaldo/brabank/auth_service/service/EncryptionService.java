@@ -11,6 +11,14 @@ import software.amazon.awssdk.services.kms.model.DataKeySpec;
 import software.amazon.awssdk.services.kms.model.GenerateDataKeyRequest;
 import software.amazon.awssdk.services.kms.model.GenerateDataKeyResponse;
 
+import javax.crypto.*;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
 @Service
 public class EncryptionService {
 
@@ -18,25 +26,43 @@ public class EncryptionService {
     private KmsConfig kmsConfig;
     @Value("${aws.kms.key-id}")
     private String kmsKeyId;
+    private Cipher cipher;
+    private SecureRandom SECURE_RANDOM_BYTES_GENERATOR;
 
-    public EncryptionService(KmsConfig kmsConfig, KmsProperties kmsProperties) {
+    public EncryptionService(KmsConfig kmsConfig, KmsProperties kmsProperties) throws NoSuchPaddingException, NoSuchAlgorithmException {
         this.kmsConfig = kmsConfig;
         this.kmsProperties = kmsProperties;
+        this.cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        this.SECURE_RANDOM_BYTES_GENERATOR = new SecureRandom();
     }
 
-    public void encrypt() {
+    public GenerateDataKeyResponse getEncryptionKey() {
         try {
-
             KmsClient client = kmsConfig.kmsClient();
-            GenerateDataKeyResponse dataEncryptionKey = client.generateDataKey(GenerateDataKeyRequest.builder()
+            return client.generateDataKey(GenerateDataKeyRequest.builder()
                     .keyId(kmsProperties.getKeyId())
                     .keySpec(DataKeySpec.AES_256)
                     .build()
             );
-            System.out.println("RESPONSE: " + dataEncryptionKey);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "There was a misconfiguration error in ours servers. Please contact our support.");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "There was a misconfiguration in our servers. Please contact our support.");
         }
+    }
+
+    public byte[] encrypt(String rawData) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
+
+        byte[] iv = new byte[12];
+        SECURE_RANDOM_BYTES_GENERATOR.nextBytes(iv);
+
+        GenerateDataKeyResponse dataKeyObject = this.getEncryptionKey();
+        byte[] plaintextKeyBytes = dataKeyObject.plaintext().asByteArray();
+
+        SecretKey secretKey = new SecretKeySpec(plaintextKeyBytes, "AES");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, new GCMParameterSpec(128, iv));
+
+
+
+        return cipher.doFinal(rawData.getBytes());
     }
     public void decrypt() {}
 
