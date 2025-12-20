@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+src/main/java/dev/idinaldo/brabank/auth_service/controller
