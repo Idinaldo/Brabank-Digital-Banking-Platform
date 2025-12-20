@@ -6,6 +6,8 @@ import dev.idinaldo.brabank.auth_service.model.role.RoleName;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.Set;
+
 @Mapper(componentModel = "spring")
 public interface RoleMapper {
     @Mapping(target = "id", ignore = true)
