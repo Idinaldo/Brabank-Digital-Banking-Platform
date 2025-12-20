@@ -25,4 +25,10 @@ public interface UserMapper {
     User userRequestDtoToUser(UserRequestDTO userRequestDTO);
     UserResponseDTO userToUserResponseDto(User user);
 
+    default Set<RoleName> getUserRoleNameSet(Set<Role> roles) {
+        return roles.stream()
+                .map(Role::getName)
+                .collect(Collectors.toSet());
+    }
+
 }
