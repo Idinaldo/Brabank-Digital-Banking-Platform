@@ -101,7 +101,7 @@ Esse é um projeto educional, não uma fintech real.
 
 
 
-## Project Status
+## Status do Projeto
 
-This version is a learning prototype (tagged as `v0-learning`).
-A clean rewrite is planned with improved domain boundaries and security design.
+Essa é uma versão de aprendizado (marca com a tag `v0-learning`).
+Uma atualização estrutral está sendo realizada com melhor design e limites.A clean rewrite is planned with improved domain boundaries and security design.
