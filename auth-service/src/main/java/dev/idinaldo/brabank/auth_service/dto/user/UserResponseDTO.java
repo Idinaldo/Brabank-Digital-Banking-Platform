@@ -1,26 +1,34 @@
 package dev.idinaldo.brabank.auth_service.dto.user;
 
-import dev.idinaldo.brabank.auth_service.model.role.Role;
 import dev.idinaldo.brabank.auth_service.model.role.RoleName;
 import jakarta.validation.constraints.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
-public record UserResponseDTO(
-        @NotNull UUID id,
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@RequiredArgsConstructor
+public class UserResponseDTO {
 
-        @NotBlank(message = "E-mail é obrigatório")
-        @Email(message = "E-mail inválido")
-        String email,
 
-        @NotEmpty(message = "Role é obrigatório")
-        Set<RoleName> roles,
+    @NotNull
+    private UUID id;
 
-        @NotNull(message = "createdAt é obrigatório")
-        LocalDateTime createdAt,
+    @Email(message = "E-mail inválido")
+    @NotBlank(message = "E-mail é obrigatório")
+    String email;
 
-        @NotNull(message = "updatedAt é obrigatório")
-        LocalDateTime updatedAt
-){}
+    @NotEmpty(message = "Role é obrigatório")
+    Set<RoleName> roles;
+
+    @NotNull(message = "createdAt é obrigatório")
+    LocalDateTime createdAt;
+
+    @NotNull(message = "updatedAt é obrigatório")
+    LocalDateTime updatedAt;
+}

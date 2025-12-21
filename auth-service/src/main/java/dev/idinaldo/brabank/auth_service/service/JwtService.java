@@ -1,6 +1,7 @@
 package dev.idinaldo.brabank.auth_service.service;
 
-import dev.idinaldo.brabank.auth_service.mapper.UserMapper;
+import dev.idinaldo.brabank.auth_service.mapper.facade.RoleMapperFacade;
+import dev.idinaldo.brabank.auth_service.mapper.standard.UserMapper;
 import dev.idinaldo.brabank.auth_service.model.role.RoleName;
 import dev.idinaldo.brabank.auth_service.model.user.User;
 import io.jsonwebtoken.Jwts;
@@ -14,23 +15,24 @@ import java.util.Set;
 @Service
 public class JwtService {
 
-    private UserMapper userMapper;
+    private final RoleMapperFacade roleMapperFacade;
 
-    public JwtService(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    public JwtService(RoleMapperFacade roleMapperFacade) {
+        this.roleMapperFacade = roleMapperFacade;
     }
 
     // TODO: add signWith
     public String generateToken(User user) {
 
         Instant now = Instant.now();
-        Set<RoleName> roleNameSet = userMapper.getUserRoleNameSet(user.getRoles());
+        Set<RoleName> roles = roleMapperFacade.rolesToRoleNames(user.getRoles());
+        String userSubjectStr = String.valueOf(user.getUserSubject());
         String jwtToken = Jwts.builder()
                 .header()
                 .and()
                 .issuer("Brabank Auth Service")
-                .subject(String.valueOf(user.getUserSubject()))
-                .claim("roles", roleNameSet)
+                .subject(userSubjectStr)
+                .claim("roles", roles)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(15, ChronoUnit.MINUTES)))
                 .compact();

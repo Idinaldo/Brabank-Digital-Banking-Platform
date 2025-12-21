@@ -2,6 +2,7 @@ package dev.idinaldo.brabank.auth_service.service;
 
 import dev.idinaldo.brabank.auth_service.infra.config.KmsConfig;
 import dev.idinaldo.brabank.auth_service.infra.config.KmsProperties;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import software.amazon.awssdk.services.kms.model.GenerateDataKeyResponse;
 import javax.crypto.*;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -36,7 +38,7 @@ public class EncryptionService {
         this.SECURE_RANDOM_BYTES_GENERATOR = new SecureRandom();
     }
 
-    public GenerateDataKeyResponse getEncryptionKey() {
+    public GenerateDataKeyResponse requestDataKey() {
         try {
             KmsClient client = kmsConfig.kmsClient();
             return client.generateDataKey(GenerateDataKeyRequest.builder()
@@ -49,21 +51,25 @@ public class EncryptionService {
         }
     }
 
-    public byte[] encrypt(String rawData) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
-
+    public byte[] generateIv() {
         byte[] iv = new byte[12];
         SECURE_RANDOM_BYTES_GENERATOR.nextBytes(iv);
+        return iv;
+    }
 
-        GenerateDataKeyResponse dataKeyObject = this.getEncryptionKey();
-        byte[] plaintextKeyBytes = dataKeyObject.plaintext().asByteArray();
+    public byte[] encrypt(String rawData, byte[] encryptionKey, byte[] iv) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
 
-        SecretKey secretKey = new SecretKeySpec(plaintextKeyBytes, "AES");
+        SecretKey secretKey = new SecretKeySpec(encryptionKey, "AES");
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, new GCMParameterSpec(128, iv));
-
-
 
         return cipher.doFinal(rawData.getBytes());
     }
-    public void decrypt() {}
+
+    public String decrypt(byte[] encryptedData, byte[] iv, byte[] encryptedDataKey) throws IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, InvalidKeyException {
+        SecretKey secretKey = new SecretKeySpec(encryptedDataKey, "AES");
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, new GCMParameterSpec(128, iv));
+
+        return new String(cipher.doFinal(encryptedData), StandardCharsets.UTF_8);
+    }
 
 }
