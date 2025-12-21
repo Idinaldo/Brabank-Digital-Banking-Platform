@@ -96,3 +96,12 @@ O Brabank nasceu para ser mais que uma fintech: Queremos ser uma ponte entre pes
 ## Disclaimer
 
 Esse é um projeto educional, não uma fintech real. 
+
+
+
+
+
+## Project Status
+
+This version is a learning prototype (tagged as `v0-learning`).
+A clean rewrite is planned with improved domain boundaries and security design.
